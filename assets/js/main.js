@@ -1,8 +1,6 @@
-{
-  /* Productos  */
-}
+/** ------------- Productos ------------- */
 
-const products = [
+const items = [
   {
     id: 1,
     name: "Hoodies",
@@ -30,7 +28,8 @@ const products = [
 ];
 const cartShopping = [];
 
-//loading Academlo
+/** ------------- Loading ------------- */
+
 const loadingAcademlo = () => {
   const containerLoading = document.querySelector(".loading");
   window.addEventListener("load", () => {
@@ -40,7 +39,8 @@ const loadingAcademlo = () => {
   });
 };
 
-//cuando recargo la pagina se guardan los cambios
+/** ------------- Cambios persistentes en la pagina ------------- */
+
 const refreshPage = () => {
   document.addEventListener("DOMContentLoaded", (e) => {
     if (localStorage.getItem("cart") !== null) {
@@ -59,7 +59,8 @@ const refreshPage = () => {
   });
 };
 
-//aplico el modo obcuro
+/** ------------- DarkMode ------------- */
+
 const darkMode = () => {
   iconDarkMode.addEventListener("click", (e) => {
     e.preventDefault();
@@ -71,7 +72,8 @@ const darkMode = () => {
   });
 };
 
-//aplico el menu fijo
+/** ------------- Sticky Menu ------------- */
+
 const stickyMenu = () => {
   window.addEventListener("scroll", (event) => {
     let scrollY = this.scrollY;
@@ -81,7 +83,8 @@ const stickyMenu = () => {
   });
 };
 
-//deslizo el menu lateral
+/** ------------- Menu lateral ------------- */
+
 const dropdownMenu = () => {
   iconMenu.addEventListener("click", (e) => {
     e.preventDefault();
@@ -92,7 +95,8 @@ const dropdownMenu = () => {
   });
 };
 
-//deslizo el menu del carrito
+/** ------------- Menu del carrito ------------- */
+
 const dropdownCart = () => {
   shoppingcartIcon.addEventListener("click", (e) => {
     e.preventDefault();
@@ -108,35 +112,37 @@ const dropdownCart = () => {
   });
 };
 
-//ingreso los productos al dom dinamicamente
+/** -------------Ingreso de productos ------------- */
+
 const addingProductsDom = () => {
-  addingProducts(products);
+  addingProducts(items);
 
   main__filter.addEventListener("click", ({ target }) => {
     if (
       target.className.includes("filter__showAll") ||
       target.parentElement.className.includes("filter__showAll")
     )
-      addingProducts(products);
+      addingProducts(items);
     if (
       target.className.includes("filter__hoodie") ||
       target.parentElement.className.includes("filter__hoodie")
     )
-      addingProducts(products.filter((item) => item.name === "Hoodies"));
+      addingProducts(items.filter((item) => item.name === "Hoodies"));
     if (
       target.className.includes("filter__shirt") ||
       target.parentElement.className.includes("filter__shirt")
     )
-      addingProducts(products.filter((item) => item.name === "Shirts"));
+      addingProducts(items.filter((item) => item.name === "Shirts"));
     if (
       target.className.includes("filter__sweatshirts") ||
       target.parentElement.className.includes("filter__sweatshirts")
     )
-      addingProducts(products.filter((item) => item.name === "Sweatshirts"));
+      addingProducts(items.filter((item) => item.name === "Sweatshirts"));
   });
 };
 
-//manejo los eventos de los clicks para pintar las acciones en el dom
+/** ------------- Manejo de eventos de los clicks ------------- */
+
 const addingProductsToCartShopping = () => {
   const buttons = document.querySelectorAll(".icon__product");
   buttons.forEach((button) => {
@@ -150,7 +156,9 @@ const addingProductsToCartShopping = () => {
   });
 };
 
-// este metodo agrega, quita y elimina totalmente elementos del carrito
+/** ------------- Agregar, eliminar y quitar elementos en el array -------------*/
+/** ------------- Incluye validaciones ------------- */
+
 const cartActionsButton = () => {
   shoppingcart.addEventListener("click", (e) => {
     const buttonClicked = e.target.getAttribute("data-id");
@@ -158,9 +166,9 @@ const cartActionsButton = () => {
     if (e.target.classList.contains("bx-plus"))
       if (validar[0].quantity > validar[0].addCount)
         validar[0].addCount = validar[0].addCount + 1;
-    if (e.target.classList[1] === "bx-minus")
+    if (e.target.classList.contains("bx-minus"))
       validar[0].addCount = validar[0].addCount - 1;
-    if (e.target.classList[1] === "bx-trash") validar[0].addCount = 0;
+    if (e.target.classList.contains("bx-trash")) validar[0].addCount = 0;
     addingProductsCartDom();
     countItemsCartDom();
     totalSum();
@@ -168,7 +176,8 @@ const cartActionsButton = () => {
   });
 };
 
-//funcion para agregar los articulos al dom y esta funcion se llama dentro de addingProductsToCartShopping
+/** Agregar articulos al dom */
+
 const addingProductsCartDom = (e) => {
   let cant = getCountItems();
 
@@ -222,12 +231,13 @@ const addingProductsCartDom = (e) => {
   }
 };
 
-//Pinto la notificacion de la cantidad de productos agregados
+/** Cantidad de productos agregados */
 const countItemsCartDom = () => {
   cart__count.innerHTML = getCountItems();
 };
 
-//algoritmo para pintar los articulos en el dom
+/** Pintar articulos en el DOM */
+
 const addingProducts = (products) => {
   container.innerHTML = "";
   products.forEach((element) => {
@@ -244,7 +254,8 @@ const addingProducts = (products) => {
   });
 };
 
-// suma total del pago y los items
+/** Sum total */
+
 const totalSum = () => {
   const totalSum1 = document.querySelector(".total__sum");
 
@@ -262,7 +273,8 @@ const totalSum = () => {
   }
 };
 
-//algoritmo para calcular la cantidad de elementos agregados al carrito
+/** Calcular cantidad de elemtos agregados al carrito */
+
 const getCountItems = () => {
   let totalItems = 0;
   cartShopping.forEach((item) => {
@@ -271,35 +283,34 @@ const getCountItems = () => {
   return totalItems;
 };
 
-//Algoritmo para agregar elementos al array cartShopping y al local storage
+/** Agregar elementos al array y al localStorage */
+
 const addToCartAlgorithm = (e) => {
-  const producto = products.filter(
+  const product = items.filter(
     (item) => item.id === parseInt(e.target.getAttribute("data-id"))
   );
   if (cartShopping.length === 0) {
     cartShopping.push({
-      id: producto[0].id,
-      name: producto[0].name,
-      price: producto[0].price,
-      image: producto[0].image,
-      category: producto[0].category,
-      quantity: producto[0].quantity,
+      id: product[0].id,
+      name: product[0].name,
+      price: product[0].price,
+      image: product[0].image,
+      category: product[0].category,
+      quantity: product[0].quantity,
       addCount: 1,
     });
     localStorage.setItem("cart", JSON.stringify(cartShopping));
   } else {
-    const validation = cartShopping.filter(
-      (item) => item.id === producto[0].id
-    );
+    const validation = cartShopping.filter((item) => item.id === product[0].id);
 
     if (validation.length === 0) {
       cartShopping.push({
-        id: producto[0].id,
-        name: producto[0].name,
-        price: producto[0].price,
-        image: producto[0].image,
-        category: producto[0].category,
-        quantity: producto[0].quantity,
+        id: product[0].id,
+        name: product[0].name,
+        price: product[0].price,
+        image: product[0].image,
+        category: product[0].category,
+        quantity: product[0].quantity,
         addCount: 1,
       });
       localStorage.setItem("cart", JSON.stringify(cartShopping));
@@ -310,7 +321,8 @@ const addToCartAlgorithm = (e) => {
   }
 };
 
-//funcion para cambiar el icono al dar un click
+/** Cambiar icono */
+
 const swtichIcons = (
   element,
   classToEvaluate,
@@ -327,7 +339,8 @@ const swtichIcons = (
   }
 };
 
-//funcion para saber la posicion en la que estoy en el dom y ubicarla en el navbar
+/** Saber posicion y ubicarla en el navBar */
+
 const navPosition = () => {
   const entries = document.querySelectorAll(".observer");
   const home = document.querySelector(".nav__home");
@@ -343,6 +356,8 @@ const navPosition = () => {
   });
   entries.forEach((item) => ob.observe(item));
 };
+
+/** Aplico las funciones */
 
 loadingAcademlo();
 refreshPage();
